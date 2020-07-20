@@ -12,6 +12,7 @@ import database_calls
 import os
 
 server = Flask(__name__)
+Cors(server)
 Base = declarative_base()
 
 server.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
