@@ -136,4 +136,4 @@ class Messages(Base):
 
 
 if __name__ == '__main__':
-    socketio.run(server)
+    server.run()
