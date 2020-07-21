@@ -23,7 +23,7 @@ session = Session()
 db = SQLAlchemy(server)
 Payload.max_decode_packets = 100000
 socketio = SocketIO(server)
-# cors = CORS(server, resources={r"/*": {"origins": "*"}})
+cors = CORS(server, resources={r"/*": {"origins": "*"}})
 # server.debug = True
 # server.host = 'localhost'
 
@@ -142,4 +142,4 @@ class Messages(Base):
 
 
 if __name__ == '__main__':
-    server.run()
+    server.run(host='0.0.0.0')
