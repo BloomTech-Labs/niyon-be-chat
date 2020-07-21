@@ -32,6 +32,13 @@ server.host = 'localhost'
 user = []
 
 
+@server.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 @socketio.on('join')
 @cross_origin()
 def on_join(data):
