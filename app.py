@@ -31,6 +31,7 @@ user = []
 
 
 @server.after_request
+@cross_origin()
 def after_request(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = 'http://localhost:3000/'
@@ -38,6 +39,7 @@ def after_request(response):
 
 
 @socketio.on('join')
+@cross_origin()
 def on_join(data):
     new_user = None
     for id in database_calls.my_list_of_users:
@@ -74,6 +76,7 @@ def on_history(room):
 
 
 @socketio.on('message')
+@cross_origin()
 def on_message(msg):
     res = None
     for sub in user:
@@ -101,6 +104,7 @@ def on_message(msg):
 
 
 @server.route('/chathistory', methods=['GET'], )
+@cross_origin()
 def get_chat_history():
     current_room = request.args['room_name']
     msgs = []
@@ -143,4 +147,4 @@ class Messages(Base):
 
 if __name__ == '__main__':
     socketio.run(server, host='0.0.0.0')
-    # server.run(host='0.0.0.0')
+    server.run(host='0.0.0.0')
