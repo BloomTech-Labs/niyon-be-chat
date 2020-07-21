@@ -140,11 +140,10 @@ class Messages(Base):
     lastname = Column(Text)
     msg = Column(Text)
 
-    def __repr__(self):
-        return "<Messages(userid='%s', roomname='%s', mytimestamp='%s', usertype='%s', firstname='%s', lastname='%s', msg='%s'>" % (
-            self.userid, self.roomname, self.mytimestamp, self.usertype, self.firstname, self.lastname, self.msg)
+    # def __repr__(self):
+    #     return "<Messages(userid='%s', roomname='%s', mytimestamp='%s', usertype='%s', firstname='%s', lastname='%s', msg='%s'>" % (
+    #         self.userid, self.roomname, self.mytimestamp, self.usertype, self.firstname, self.lastname, self.msg)
 
 
 if __name__ == '__main__':
-    socketio.run(server, host='0.0.0.0')
     server.run(host='0.0.0.0')
