@@ -12,7 +12,6 @@ import database_calls
 import os
 
 server = Flask(__name__)
-CORS(server)
 Base = declarative_base()
 
 server.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -24,9 +23,9 @@ session = Session()
 db = SQLAlchemy(server)
 Payload.max_decode_packets = 100000
 socketio = SocketIO(server, cors_allowed_origins="*")
-cors = CORS(server, resources={r"/*": {"origins": "*"}})
-server.debug = True
-server.host = 'localhost'
+# cors = CORS(server, resources={r"/*": {"origins": "*"}})
+# server.debug = True
+# server.host = 'localhost'
 
 user = []
 
