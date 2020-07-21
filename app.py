@@ -18,7 +18,6 @@ Base = declarative_base()
 server.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-server.config['CORS_HEADERS'] = 'Content-Type'
 engine = create_engine(os.getenv('DATABASE_URI'))
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -40,7 +39,6 @@ def after_request(response):
 
 
 @socketio.on('join')
-@cross_origin()
 def on_join(data):
     new_user = None
     for id in database_calls.my_list_of_users:
@@ -77,7 +75,6 @@ def on_history(room):
 
 
 @socketio.on('message')
-@cross_origin()
 def on_message(msg):
     res = None
     for sub in user:
@@ -105,7 +102,6 @@ def on_message(msg):
 
 
 @server.route('/chathistory', methods=['GET'], )
-@cross_origin()
 def get_chat_history():
     current_room = request.args['room_name']
     msgs = []
