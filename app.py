@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from time import localtime, strftime
 
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO, send, join_room, leave_room, emit
 from engineio.payload import Payload
 from flask_sqlalchemy import SQLAlchemy
@@ -32,6 +32,7 @@ user = []
 
 
 @socketio.on('join')
+@cross_origin()
 def on_join(data):
     new_user = None
     for id in database_calls.my_list_of_users:
@@ -68,6 +69,7 @@ def on_history(room):
 
 
 @socketio.on('message')
+@cross_origin()
 def on_message(msg):
     res = None
     for sub in user:
@@ -95,6 +97,7 @@ def on_message(msg):
 
 
 @server.route('/chathistory', methods=['GET'], )
+@cross_origin()
 def get_chat_history():
     current_room = request.args['room_name']
     msgs = []
