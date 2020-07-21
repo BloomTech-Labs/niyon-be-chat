@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from time import localtime, strftime
-
+import settings
 from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO, send, join_room, leave_room, emit
 from engineio.payload import Payload
@@ -17,6 +17,7 @@ Base = declarative_base()
 server.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+server.config.from_envvar(settings)
 engine = create_engine(os.getenv('DATABASE_URI'))
 Session = sessionmaker(bind=engine)
 session = Session()
