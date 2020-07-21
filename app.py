@@ -23,7 +23,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 db = SQLAlchemy(server)
 Payload.max_decode_packets = 100000
-socketio = SocketIO(server)
+socketio = SocketIO(server, cors_allowed_origins="*")
 cors = CORS(server, resources={r"/*": {"origins": "*"}})
 # server.debug = True
 # server.host = 'localhost'
