@@ -42,7 +42,7 @@ try:
                          password=os.getenv('NIYON_CHAT_PASSWORD'),
                          port=os.getenv('NIYON_PG_PORT'))
     cursor = connection.cursor()
-    my_room_list = "SELECT id, roomname FROM public.roomnames"
+    my_room_list = "SELECT id, roomname FROM public.roomname"
 
     cursor.execute(my_room_list)
     my_rooms = cursor.fetchall()
