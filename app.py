@@ -17,7 +17,7 @@ Base = declarative_base()
 server.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-server.config.from_envvar(settings)
+server.config.from_envvar(settings.load_dotenv())
 engine = create_engine(os.getenv('DATABASE_URI'))
 Session = sessionmaker(bind=engine)
 session = Session()
