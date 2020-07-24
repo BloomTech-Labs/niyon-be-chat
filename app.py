@@ -128,16 +128,16 @@ def get_chat_history():
         if room['room_name'] == current_room:
             current_room_msgs.append(room)
     print(current_room_msgs)
-    if len(current_room_msgs) < 1:
-        current_room_msgs.append(
-            {'first_name': 'Niyon',
-             'last_name': 'Bot',
-             'user_type': 'Admin',
-             'msg': 'Welcome to the Niyon Chat App',
-             'user_id': 0,
-             'room_name': 'Any',
-             'timestamp': 'Now', }
-        )
+    # if len(current_room_msgs) == 0:
+    #     current_room_msgs.append(
+    #         {'first_name': 'Niyon',
+    #          'last_name': 'Bot',
+    #          'user_type': 'Admin',
+    #          'msg': 'Welcome to the Niyon Chat App',
+    #          'user_id': 0,
+    #          'room_name': 'Any',
+    #          'timestamp': 'Now', }
+    #     )
     return jsonify(current_room_msgs)
 
 
