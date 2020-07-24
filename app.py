@@ -105,8 +105,9 @@ def on_message(msg):
     send(res, broadcast=True, room=current_room)
 
 
-@server.route('/chathistory', methods=['GET'], )
+@server.route('/chathistory', methods=['GET'])
 def get_chat_history():
+    print(request)
     current_room = request.args['room_name']
     msgs = []
     current_room_msgs = []
@@ -126,6 +127,16 @@ def get_chat_history():
         if room['room_name'] == current_room:
             current_room_msgs.append(room)
     print(current_room_msgs)
+    if len(current_room_msgs) < 1:
+        current_room_msgs.append(
+            {'first_name': 'Niyon',
+             'last_name': 'Bot',
+             'user_type': 'Admin',
+             'msg': 'Welcome to the Niyon Chat App',
+             'user_id': 0,
+             'room_name': 'Any',
+             'timestamp': 'Now', }
+        )
     return jsonify(current_room_msgs)
 
 
