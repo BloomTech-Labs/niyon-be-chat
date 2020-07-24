@@ -10,6 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import database_calls
 import os
+import rooms
 
 server = Flask(__name__)
 CORS(server)
@@ -52,7 +53,7 @@ def on_join(data):
     new_user.update({'session_id': request.sid})
     user.append(new_user)
     room = None
-    for id in database_calls.room_list:
+    for id in rooms.room_list:
         if id['id'] == data['room_id']:
             room = id['room']
     on_history(room)
@@ -86,7 +87,7 @@ def on_message(msg):
             res = sub
             break
     current_room = None
-    for name in database_calls.room_list:
+    for name in rooms.room_list:
         if name['room'] == msg['room']:
             current_room = name['room']
     res['msg'] = msg['msg']
