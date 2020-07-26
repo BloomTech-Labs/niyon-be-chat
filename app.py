@@ -39,7 +39,7 @@ user = []
 @server.after_request
 def after_request(response):
     header = response.headers
-    header['Access-Control-Allow-Origin'] = 'http://localhost:3000/'
+    header['Access-Control-Allow-Origin'] = '*'
     return response
 
 
