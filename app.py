@@ -40,6 +40,7 @@ user = []
 def after_request(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = '*'
+    header('Set-Cookie: cross-site-cookie=name; SameSite=None; Secure')
     return response
 
 
