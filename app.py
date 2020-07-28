@@ -46,6 +46,7 @@ def after_request(response):
 
 @socketio.on('join')
 def on_join(data):
+    print(data)
     new_user = None
     for id in database_calls.my_list_of_users:
         if id['user_id'] == data['id']:
