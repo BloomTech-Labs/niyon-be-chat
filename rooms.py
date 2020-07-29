@@ -1,3 +1,7 @@
+# during demos a bug popped up with retrieving data from our room_list
+# to save time we created a list of dictionaries to mock a call
+# we believe the solution would be to create an SQLAlchemy class to model the room_list
+# and moving the call from database_calls.py to the app itself
 room_list = [
     {'id': 1, 'room': 'General'},
     {'id': 2, 'room': 'C++'},

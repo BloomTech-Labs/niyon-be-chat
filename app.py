@@ -21,21 +21,27 @@ cors = CORS(server, resources={
 })
 Base = declarative_base()
 
+# creating the connection to the chat db
 server.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 engine = create_engine(os.getenv('DATABASE_URI'))
 Session = sessionmaker(bind=engine)
 session = Session()
+# passing our server to SQLAlchemy to interact with our db
 db = SQLAlchemy(server)
 Payload.max_decode_packets = 100000
+# creating an instance of socketio with our server
 socketio = SocketIO(server, cors_allowed_origins="*")
 # server.debug = True
 # server.host = 'localhost'
 
+# every logged on user with appended here
+# idea was we could filter by room and send back a list of users currently in room
 user = []
 
 
+# every request is ran with these headers, no authorization is required for this server
 @server.after_request
 def after_request(response):
     header = response.headers
@@ -44,6 +50,8 @@ def after_request(response):
     return response
 
 
+# once a user connects we use a connection to the main niyon db
+# and retrieve their data, and add them to our pool of logged on users
 @socketio.on('join')
 def on_join(data):
     print(data)
@@ -62,6 +70,7 @@ def on_join(data):
     join_room(room)
 
 
+# currently a broken function that is not needed, chat history is now done through a get request below
 def on_history(room):
     msgs = []
     current_room_msgs = []
@@ -81,20 +90,24 @@ def on_history(room):
             current_room_msgs.append(roomname)
 
 
+# when a message is received
 @socketio.on('message')
 def on_message(msg):
     res = None
+    # using the request.sid we filter our list of users and set our user
     for sub in user:
         if sub['session_id'] == request.sid:
             res = sub
             break
     current_room = None
+    # the incoming data includes a keyword room, we use to filter our room list and set the current room
     for name in rooms.room_list:
         if name['room'] == msg['room']:
             current_room = name['room']
     res['msg'] = msg['msg']
     res['room_name'] = current_room
     res['timestamp'] = strftime('%b %d, %I:%M%p', localtime())
+    # creating an instance of our Messages class to insert into our db
     data = Messages(
         userid=res['user_id'],
         roomname=res['room_name'],
@@ -103,11 +116,12 @@ def on_message(msg):
         firstname=res['first_name'],
         lastname=res['last_name'],
         msg=res['msg'])
-    session.add(data)
-    session.commit()
+    session.add(data)  # inserting our data in our db
+    session.commit()  # committing above db interaction
     send(res, broadcast=True, room=current_room)
 
 
+# api endpoint that accepts params in a GET method to return current room messages
 @server.route('/chathistory', methods=['GET'])
 def get_chat_history():
     print(request)
@@ -143,6 +157,7 @@ def get_chat_history():
     return jsonify(current_room_msgs)
 
 
+# SQLAlchemy instance of our table 'messages'
 class Messages(Base):
     __tablename__ = 'messages'
 

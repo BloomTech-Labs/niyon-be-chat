@@ -5,6 +5,9 @@ from sqlalchemy.orm import mapper, sessionmaker
 from psycopg2 import connect, Error
 import os
 
+# this connection retrieves all the users on niyon_app
+# the bug we discovered in demos was this call is only called during the heroku build
+# we believe the solution would be to move this call to the 'on join' func
 my_list_of_users = []
 try:
     connection = connect(database=os.getenv('NIYON_HEROKU_DATABASE'),
@@ -34,6 +37,8 @@ finally:
         cursor.close()
         connection.close()
 
+# this is the call that saw us create the room.py
+# we included a possible solution in room.py
 room_list = []
 try:
     connection = connect(database=os.getenv('NIYON_CHAT_DATABASE'),
@@ -61,7 +66,7 @@ finally:
         cursor.close()
         connection.close()
 
-
+# db call is no longer being used
 messages_list = []
 try:
     connection = connect(database=os.getenv('NIYON_CHAT_DATABASE'),
